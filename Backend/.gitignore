@@ -1,0 +1,12 @@
+# Node.js projects
+node_modules/
+.env
+package-lock.json
+
+# Logs
+logs/
+*.log
+
+# MacOS & Windows system files
+.DS_Store
+Thumbs.db
