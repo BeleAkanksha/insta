@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
         },
         lastname: {
             type: String,
-        },
+            required: true
+        }
     },
     email: {
         type: String,
@@ -19,32 +20,47 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
-        select: false
+        required: true
     },
-    profileImage: {
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    profilePicture: {
         type: String,
     },
-    posts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'post'
-    }],
-})
+    followers: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+        default: []
+    },
+    following: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+        default: []
+    },
+    bio: {
+        type: String,
+        default: ''
+    },
+    posts: {
+        type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+        default: []
+    }
+});
 
-userSchema.methods.generateAuthToken = function(){
-    const token = jwt.sign({_id: this._id}, process.env.JWT_SECRET, {expiresIn: '24h'});
-    return token;
-}
+userSchema.statics.hashPassword = async function(password) {
+    const salt = await bcrypt.genSalt(10);
+    return await bcrypt.hash(password, salt);
+};
 
-userSchema.methods.comparePassword = async function(password){
+userSchema.methods.generateAuthToken = function() {
+    return jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
+};
+
+userSchema.methods.comparePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
-}
+};
 
-userSchema.statics.hashPassword = async function(password){
-    return await bcrypt.hash(password, 10);
-}
+const User = mongoose.model('User', userSchema);
 
-
-
-const userModel = mongoose.model('user', userSchema);
-module.exports = userModel;
+module.exports = User;

@@ -4,7 +4,10 @@ import Login from './pages/Login'
 import Profile from './pages/Profile'
 import Register from './pages/Register'
 import Home from './pages/Home'
+import Logout from './pages/Logout'
 import './App.css'
+import UserProtectedWrapper from './pages/UserProtectedWrapper'
+import CreatePost from './pages/CreatePost'
 
 const App = () => {
   
@@ -15,8 +18,17 @@ const App = () => {
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/home" element={<Home />} /> 
-          {/* <Route path="/logout" element={<Logout />} /> */}
+          <Route path="/home" element={
+            <UserProtectedWrapper>
+              <Home />
+            </UserProtectedWrapper>
+          } />
+          <Route path="/create-post" element={
+            <UserProtectedWrapper>
+              <CreatePost />
+            </UserProtectedWrapper>
+          } />
+          <Route path='/logout' element={<Logout />} />
         </Routes>
       </div>
     

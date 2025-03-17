@@ -10,6 +10,8 @@ const expressSession = require('express-session');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const userRoute = require('./routes/user.routes');
+const postRoute = require('./routes/post.routes');
+const storyRoute = require('./routes/story.routes');
 
 connectDB();
 
@@ -34,5 +36,7 @@ app.get('/', (req,res)=>{
 });
 
 app.use('/users', userRoute);
+app.use('/posts', postRoute);
+app.use('/stories', storyRoute);
 
 module.exports = app;

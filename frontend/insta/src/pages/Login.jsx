@@ -20,10 +20,11 @@ const Login = () => {
             password
         }
 
-        const response = await axios.post('http://localhost:4000/users/login', userData)
+        const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/users/login`, userData)
         if (response.status === 200) {
             console.log("Login successful, navigating...");
             setUser(response.data.user);
+            localStorage.setItem('token', response.data.token);
             navigate('/home');
         }
 

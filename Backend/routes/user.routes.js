@@ -21,6 +21,11 @@ userController.loginUser
 
 router.get('/profile', authMiddleware.authUser, userController.getUserProfile);
 
+router.post('/follow/:id', authMiddleware.authUser, userController.followUser);
+
+router.post('/unfollow/:id', authMiddleware.authUser, userController.unfollowUser);
+
+
 router.get('/logout', authMiddleware.authUser, userController.logoutUser);
 
 module.exports = router;
